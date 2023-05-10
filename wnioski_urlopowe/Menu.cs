@@ -1,10 +1,13 @@
-﻿using holidayRequestSystem;
+﻿using database;
+using Google.Protobuf;
+using holidayRequestSystem;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
 
 namespace menuSystem
 {
@@ -29,74 +32,39 @@ namespace menuSystem
             }   
         }
 
-        public void menuAction(MenuChoice menuChoice)
+        public string menuAction(MenuChoice menuChoice, HolidayRequest holidayRequest)
         {
+            string actionOutput = "";
             if(menuChoice == MenuChoice.CreateHolidayRequest) 
             {
-                HolidayRequest holidayRequest = new HolidayRequest(getName(), getSurname(), getStartDate(), getEndDate());
-                Console.WriteLine(holidayRequest.GetSummary());
+                actionOutput = holidayRequest.GetSummary();
             }
             else
             {
-                Console.WriteLine("Nie ma takiej opcji!");
+                actionOutput = "Nie ma takiej opcji!";
             }
+            return actionOutput;
         }
 
-        public string getName()
+        public DateTime convertToDate(string date)
         {
-            Console.WriteLine("Podaj imię: ");
-            string name = Console.ReadLine();
-            return name;
+            DateTime returnDate;
+            DateTime.TryParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out returnDate);
+            return returnDate;
         }
 
-        public string getSurname()
-        {
-            Console.WriteLine("Podaj nazwisko: ");
-            string surname = Console.ReadLine();
-            return surname;
-        }
-
-        public DateTime getStartDate()
+        public bool isDateValid(string date)
         {
             DateTime startDate;
 
-            while (true)
+            if (DateTime.TryParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
             {
-                Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
-
-                if (!DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
-                {
-                    Console.WriteLine("Nieprawidłowy format daty.");
-                    continue;
-                }
-                break;
+                return true;
             }
-            return startDate;
-        }
-
-        public DateTime getEndDate()
-        {
-            DateTime endDate;
-
-            while (true)
+            else
             {
-               Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
-
-               if (!DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
-               {
-                    Console.WriteLine("Nieprawidłowy format daty.");
-                    continue;
-               }
-               break;
+                return false;
             }
-            return endDate;
-        }
-
-        public string getChoice()
-        {
-            Console.WriteLine("Wybór: ");
-            string choice = Console.ReadLine();
-            return choice;
         }
     }
 }
