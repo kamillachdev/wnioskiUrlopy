@@ -2,41 +2,20 @@
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using wnioski_urlopowe;
+using menuSystem;
+using holidayRequestSystem;
+using database;
+using static menuSystem.Menu;
 
 namespace Program
 {
-    class Menu
-    {
-        static string choice;
-
-        static void choiceAction(Data dataObject)
-        {
-           
-            bool validChoice = false;
-            while (!validChoice)
-            {
-                Console.WriteLine("Wybierz: ");
-                choice = Console.ReadLine();
-                switch (choice)
-                {
-                    case "1":
-                        validChoice = true;
-                        dataObject.getData();
-                        dataObject.showSummary();
-                        break;
-                    default:
-                        Console.WriteLine("Nieprawidłowy wybór!");
-                        break;
-                }
-            }
-        }
-        
+    public class holidayManegement
+    {        
         static void Main()
         {
-            Data data = new Data();
-            Console.WriteLine("1. Nowy wniosek urlopowy");
-            choiceAction(data);
+            Menu menu = new Menu();
+            Console.WriteLine(menu.printMenu());
+            menu.menuAction(menu.ReadChoice(menu.getChoice()));
         }
     }
 }
