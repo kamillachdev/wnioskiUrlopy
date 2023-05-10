@@ -15,70 +15,37 @@ namespace holidayRequestSystem
 
         public HolidayRequest(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
         {
+            this.name = name;
+            this.surname = surname;
+            this.holidayStartDate = holidayStartDate;
+            this.holidayEndDate = holidayEndDate;
+        }
+
+        static public string isValid(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
+        {
             string namePattern = @"^[A-Z][a-zA-Z]{1,}$";
-            string datePattern = @"^\d{2}\-\d{2}\-\d{4}$";
 
-            bool isMatchName = false, isMatchSurname = false, isMatchStartDate = false, isMatchEndDate = false;
-
-            do
+            if (!Regex.IsMatch(name, namePattern))
             {
-                isMatchName = Regex.IsMatch(name, namePattern);
-                if (!isMatchName)
-                {
-                    Console.WriteLine("Wprowadzono niepoprawne imię, wprowadź ponownie: ");
-                    name = Console.ReadLine();
-                }
-                else
-                    this.name = name;
-            } while (!isMatchName);
+                return "Niepoprawne imię";
+            }
 
-            do
+            if (!Regex.IsMatch(surname, namePattern))
             {
-                isMatchSurname = Regex.IsMatch(surname, namePattern);
-                if (!isMatchSurname)
-                {
-                    Console.WriteLine("Wprowadzono niepoprawne nazwisko, wprowadź ponownie: ");
-                    surname = Console.ReadLine();
-                }
-                else
-                    this.surname = surname;
-            } while (!isMatchSurname);
+                return "Niepoprawne nazwisko";
+            }
 
-            do
+            if (holidayStartDate < DateTime.Today)
             {
-                isMatchStartDate = DateTime.TryParseExact(holidayStartDate.ToString("dd-MM-yyyy"), "dd-MM-yyyy", null, DateTimeStyles.None, out holidayStartDate);
-                if (!isMatchStartDate)
-                {
-                    Console.WriteLine("Wprowadzono niepoprawną datę początkową, wprowadź ponownie w formacie dd-MM-yyyy: ");
-                    holidayEndDate = DateTime.Parse(Console.ReadLine());
-                }
-                else if (holidayStartDate < DateTime.Today)
-                {
-                    Console.WriteLine("Data początkowa nie może być przed datą dzisiejszą, wprowadź ponownie: ");
-                    holidayStartDate = DateTime.Parse(Console.ReadLine());
-                    isMatchStartDate = false;
-                }
-                else
-                    this.holidayStartDate = holidayStartDate;
-            } while (!isMatchStartDate);
+                return "Data początkowa nie może być przed datą dzisiejszą";
+            }
 
-            do
+            if (holidayEndDate < holidayStartDate)
             {
-                isMatchEndDate = DateTime.TryParseExact(holidayEndDate.ToString("dd-MM-yyyy"), "dd-MM-yyyy", null, DateTimeStyles.None, out holidayEndDate);
-                if (!isMatchEndDate)
-                {
-                    Console.WriteLine("Wprowadzono niepoprawną datę końcową, wprowadź ponownie w formacie dd-MM-yyyy: ");
-                    holidayEndDate = DateTime.Parse(Console.ReadLine());
-                }
-                else if (holidayEndDate < holidayStartDate)
-                {
-                    Console.WriteLine("Data końcowa musi być późniejsza niż data początkowa, wprowadź ponownie: ");
-                    holidayEndDate = DateTime.Parse(Console.ReadLine());
-                    isMatchEndDate = false;
-                }
-                else
-                    this.holidayEndDate = holidayEndDate;
-            } while (!isMatchEndDate);
+                return "Data końcowa musi być późniejsza niż data początkowa";
+            }
+
+            return "OK";
         }
 
 
