@@ -9,8 +9,9 @@ namespace database
 {
     internal class Sql
     {
-        public void actionSql()
+        public string actionSql()
         {
+            string queryOutput = " ";
             string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws";
             MySqlConnection conn = new MySqlConnection(connStr);
             try
@@ -23,14 +24,16 @@ namespace database
                 //read the data
                 while (rdr.Read())
                 {
-                    Console.WriteLine(rdr[0] + " -- " + rdr[1] + " -- " + rdr[2]);
+                    queryOutput += rdr[0] + " -- " + rdr[1] + " -- " + rdr[2];
                 }
                 rdr.Close();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex.ToString());
+                queryOutput = "Nie udało się połączyć z bazą!";
             }
+
+            return queryOutput;
         }
 
 
