@@ -15,8 +15,12 @@ namespace menuSystem
     {
         public string printMenu()
         {
-            string menu = "1. Nowy wniosek urlopowy";
-            return menu;
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("MENU");
+            sb.AppendLine("1. Nowy wniosek urlopowy");
+            return sb.ToString();
         }
 
         public enum MenuChoice { Undefined, CreateHolidayRequest };
