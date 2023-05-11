@@ -11,7 +11,7 @@ namespace database
 {
     internal class Sql
     {
-        public bool actionSql(HolidayRequest holidayRequest)
+        public bool dataManagement(HolidayRequest holidayRequest)
         {
             string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws;";
             using (MySqlConnection connection = new MySqlConnection(connStr))
