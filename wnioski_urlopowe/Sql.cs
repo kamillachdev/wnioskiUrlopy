@@ -66,5 +66,59 @@ namespace database
                 return true;
             }
         }
+
+        public string getAllRequestsForUser(HolidayRequest holidayReques)
+        {
+            string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws";
+            StringBuilder sb = new StringBuilder();
+
+            using (MySqlConnection connection = new MySqlConnection(connStr))
+            {
+                connection.Open();
+                // Find the user ID
+                string getUserIDStatement = "SELECT id FROM uzytkownicy WHERE imie = @Value1 AND nazwisko = @Value2";
+                MySqlCommand getUserIDCommand = new MySqlCommand(getUserIDStatement, connection);
+                getUserIDCommand.Parameters.AddWithValue("@Value1", holidayReques.getName());
+                getUserIDCommand.Parameters.AddWithValue("@Value2", holidayReques.getSurname());
+                string userID = "";
+                using (MySqlDataReader reader = getUserIDCommand.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        userID = reader.GetString(0);
+                    }
+                    else
+                    {
+                        sb.AppendLine("Użytkownik o podanym imieniu i nazwisko nie istnieje.");
+                        connection.Close();
+                        return sb.ToString();
+                    }
+                }
+
+                // Find all requests for the user
+                string getRequestsStatement = "SELECT * FROM wnioski WHERE idUzytkownik = @Value1";
+                MySqlCommand getRequestsCommand = new MySqlCommand(getRequestsStatement, connection);
+                getRequestsCommand.Parameters.AddWithValue("@Value1", userID);
+                using (MySqlDataReader reader = getRequestsCommand.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        sb.AppendLine("Podany użytkownik nie ma żadnych wniosków.");
+                        connection.Close();
+                        return sb.ToString();
+                    }
+                    sb.AppendLine("Lista użytkownika " + holidayReques.getName() + " " + holidayReques.getSurname() + ":");
+                    while (reader.Read())
+                    {
+                        string startDate = reader.GetDateTime(1).ToString("yyyy-MM-dd");
+                        string endDate = reader.GetDateTime(2).ToString("yyyy-MM-dd");
+                        sb.AppendLine("Data rozpoczęcia: " + startDate + " Data zakończenia: " + endDate);
+                    }
+                }
+                connection.Close();
+                return sb.ToString();
+            }
+        }
     }
 }

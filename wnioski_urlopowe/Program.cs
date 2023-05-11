@@ -15,7 +15,6 @@ namespace Program
         static void Main()
         {
             Menu menu = new Menu();
-            Sql sql = new Sql();
 
             string validation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
@@ -57,17 +56,9 @@ namespace Program
             {
                 Console.WriteLine("Wybór: ");
                 choice = Console.ReadLine();
-            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest);
+            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests);
 
-
-            if (sql.actionSql(holidayRequest))
-            {
-                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
-            }
-            else
-            {
-                Console.WriteLine("Nie udało się wysłać wniosku.");
-            }
+            Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
         }
     }
 }
