@@ -7,6 +7,7 @@ using holidayRequestSystem;
 using database;
 using static menuSystem.Menu;
 using wnioski_urlopowe;
+using MySqlX.XDevAPI.Common;
 
 namespace Program
 {
@@ -16,38 +17,24 @@ namespace Program
         {
             Menu menu = new Menu();
 
-            string validation = "";
+            string nameValidation = "", dateValidation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
+
+            string name = " ", surname = " ", startDate = " ", endDate = " ";
 
 
             Console.WriteLine("LOGOWANIE");
-            while (validation != "OK")
+            while (nameValidation != "OK")
             {
                 Console.WriteLine("Podaj imię: ");
-                string name = Console.ReadLine();
+                name = Console.ReadLine();
 
                 Console.WriteLine("Podaj nazwisko: ");
-                string surname = Console.ReadLine();
+                surname = Console.ReadLine();
 
-                string startDate = "";
-                string endDate = "";
-
-                do
-                {
-                    Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
-                    startDate = Console.ReadLine();
-                } while (!menu.isDateValid(startDate));
-
-                do
-                {
-                    Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
-                    endDate = Console.ReadLine();
-                } while (!menu.isDateValid(endDate));
-
-
-                holidayRequest.setvalues(name, surname, menu.convertToDate(startDate), menu.convertToDate(endDate));
-                validation = holidayRequest.isValid();
-                Console.WriteLine(validation);
+                holidayRequest.setName(name, surname);
+                nameValidation = holidayRequest.isNameValid();
+                Console.WriteLine(nameValidation);
             }
 
             Console.WriteLine(menu.printMenu());
@@ -58,7 +45,33 @@ namespace Program
                 choice = Console.ReadLine();
             } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests);
 
-            Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+            if (choice == "2")
+            {
+                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+            }
+            else
+            {
+                while (dateValidation != "OK")
+                {
+                    do
+                    {
+                        Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
+                        startDate = Console.ReadLine();
+                    } while (!menu.isDateValid(startDate));
+
+                    do
+                    {
+                        Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
+                        endDate = Console.ReadLine();
+                    } while (!menu.isDateValid(endDate));
+
+
+                    holidayRequest.setDate(menu.convertToDate(startDate), menu.convertToDate(endDate));
+                    dateValidation = holidayRequest.isDateValid();
+                    Console.WriteLine(dateValidation);
+                }
+                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+            }
         }
     }
 }

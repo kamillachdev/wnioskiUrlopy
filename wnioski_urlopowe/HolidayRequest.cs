@@ -22,15 +22,19 @@ namespace holidayRequestSystem
             holidayEndDate = DateTime.MinValue;
         }
 
-        public void setvalues(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
+        public void setName(string name, string surname)
         {
             this.name = name;
             this.surname = surname;
+        }
+
+        public void setDate(DateTime holidayStartDate, DateTime holidayEndDate)
+        {
             this.holidayStartDate = holidayStartDate;
             this.holidayEndDate = holidayEndDate;
         }
 
-        public string isValid()
+        public string isNameValid()
         {
             string namePattern = @"^[A-Z][a-zA-Z]{1,}$";
 
@@ -44,6 +48,11 @@ namespace holidayRequestSystem
                 return "Niepoprawne nazwisko";
             }
 
+            return "OK";
+        }
+
+        public string isDateValid()
+        {
             if (holidayStartDate < DateTime.Today)
             {
                 return "Data początkowa nie może być przed datą dzisiejszą";

@@ -45,7 +45,7 @@ namespace menuSystem
             string actionOutput = "";
             if(menuChoice == MenuChoice.CreateHolidayRequest) 
             {
-                if (sql.actionSql(holidayRequest))
+                if (sql.dataManagement(holidayRequest))
                 {
                     actionOutput = holidayRequest.GetSummary();
                 }
