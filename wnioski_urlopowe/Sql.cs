@@ -3,37 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
+using holidayRequestSystem;
 using MySql.Data.MySqlClient;
 
 namespace database
 {
     internal class Sql
     {
-        public string actionSql()
+        public bool actionSql(HolidayRequest holidayRequest)
         {
-            string queryOutput = " ";
             string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
+            using (MySqlConnection connection = new MySqlConnection(connStr))
             {
-                conn.Open();
-                string query = "select * from uzytkownicy";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataReader rdr = cmd.ExecuteReader();
+                connection.Open();
+                string userID = holidayRequest.createId();
+                
+                string insertUserStatement = "INSERT INTO uzytkownicy (id, imie, nazwisko) VALUES (@Value1, @Value2, @Value3)";
 
-                //read the data
-                while (rdr.Read())
+                MySqlCommand commandUser = new MySqlCommand(insertUserStatement, connection);
+                commandUser.Parameters.AddWithValue("@Value1", userID);
+                commandUser.Parameters.AddWithValue("@Value2", holidayRequest.getName());
+                commandUser.Parameters.AddWithValue("@Value3", holidayRequest.getSurname());
+
+                // execute the command
+                int rowsUserAffected = commandUser.ExecuteNonQuery();
+                
+
+                string insertRequestStatement = "INSERT INTO wnioski (dataStart, dataKoniec, idUzytkownik) VALUES (@Value1, @Value2, @Value3)";
+
+                MySqlCommand commandRequest = new MySqlCommand(insertRequestStatement, connection);
+                commandRequest.Parameters.AddWithValue("@Value1", holidayRequest.getStartDate());
+                commandRequest.Parameters.AddWithValue("@Value2", holidayRequest.getEndDate());
+                commandRequest.Parameters.AddWithValue("@Value3", userID);
+
+
+                // execute the command
+                int rowsRequestAffected = commandRequest.ExecuteNonQuery();
+                if (rowsUserAffected > 0 && rowsRequestAffected > 0)
                 {
-                    queryOutput += rdr[0] + " -- " + rdr[1] + " -- " + rdr[2];
+                    connection.Close();
+                    return true;
                 }
-                rdr.Close();
+                else
+                {
+                    connection.Close();
+                    return false;
+                }
             }
-            catch
-            {
-                queryOutput = "Nie udało się połączyć z bazą!";
-            }
-
-            return queryOutput;
         }
 
 
