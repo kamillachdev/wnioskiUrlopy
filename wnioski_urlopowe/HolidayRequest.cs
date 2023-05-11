@@ -72,10 +72,38 @@ namespace holidayRequestSystem
         public string GetSummary()
         {
             int days = daysCounting(holidayStartDate, holidayEndDate);
-            StringBuilder stringBuilder = new StringBuilder(); 
-            stringBuilder.AppendLine($"Przyjęto wniosek urlopowy dla {name} { surname} od {holidayStartDate.ToString("d")} do {holidayEndDate.ToString("d")}");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Przyjęto wniosek urlopowy dla {name} {surname} od {holidayStartDate.ToString("d")} do {holidayEndDate.ToString("d")}");
             stringBuilder.AppendLine($"Ilość dni: {days}");
             return stringBuilder.ToString();
+        }
+
+        public string createId()
+        {
+            string fullName = name + surname;
+            int hash = fullName.GetHashCode();
+            return hash.ToString();
+        }
+
+        public string getName()
+        {
+            return name;
+        }
+
+        public string getSurname() 
+        {
+            return surname;
+        }
+
+        public string getStartDate()
+        {
+            return holidayStartDate.ToString("yyyy-MM-dd");
+        }
+
+        public string getEndDate()
+        {
+            return holidayEndDate.ToString("yyyy-MM-dd");
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Program
 
             string validation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
-            
+
             while (validation != "OK")
             {
                 Console.WriteLine("Podaj imię: ");
@@ -54,7 +54,16 @@ namespace Program
                 validation = holidayRequest.isValid();
                 Console.WriteLine(validation);
             }
-            Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+
+            Sql sql = new Sql();
+            if (sql.actionSql(holidayRequest))
+            {
+                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+            }
+            else
+            {
+                Console.WriteLine("Nie udało się wysłać wniosku.");
+            }
         }
     }
 }
