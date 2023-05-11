@@ -45,6 +45,7 @@ namespace Program
                 choice = Console.ReadLine();
             } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests);
 
+            //first check if option is 2 so user doenst need to input dates
             if (choice == "2")
             {
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
