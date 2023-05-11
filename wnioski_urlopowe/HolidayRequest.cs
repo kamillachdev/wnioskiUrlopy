@@ -13,7 +13,16 @@ namespace holidayRequestSystem
         string name, surname;
         DateTime holidayStartDate, holidayEndDate;
 
-        public HolidayRequest(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
+
+        public HolidayRequest()
+        {
+            name = "";
+            surname = "";
+            holidayStartDate = DateTime.MinValue;
+            holidayEndDate = DateTime.MinValue;
+        }
+
+        public void setvalues(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
         {
             this.name = name;
             this.surname = surname;
@@ -21,7 +30,7 @@ namespace holidayRequestSystem
             this.holidayEndDate = holidayEndDate;
         }
 
-        static public string isValid(string name, string surname, DateTime holidayStartDate, DateTime holidayEndDate)
+        public string isValid()
         {
             string namePattern = @"^[A-Z][a-zA-Z]{1,}$";
 
