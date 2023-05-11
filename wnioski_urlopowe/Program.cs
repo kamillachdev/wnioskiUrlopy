@@ -10,14 +10,18 @@ using static menuSystem.Menu;
 namespace Program
 {
     public class holidayManegement
-    {        
+    {
         static void Main()
         {
             Menu menu = new Menu();
             Console.WriteLine(menu.printMenu());
 
-            Console.WriteLine("Wybór: ");
-            string choice = Console.ReadLine();
+            string choice = string.Empty;
+            do
+            {
+                Console.WriteLine("Wybór: ");
+                choice = Console.ReadLine();
+            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest);
 
             Console.WriteLine("Podaj imię: ");
             string name = Console.ReadLine();
@@ -49,7 +53,6 @@ namespace Program
             else
             {
                 Console.WriteLine(validation);
-
             }
         }
     }

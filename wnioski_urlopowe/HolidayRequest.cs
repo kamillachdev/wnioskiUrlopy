@@ -62,11 +62,11 @@ namespace holidayRequestSystem
 
         public string GetSummary()
         {
-            string summary = string.Empty;
             int days = daysCounting(holidayStartDate, holidayEndDate);
-            summary = "Przyjęto wniosek urlopowy dla " + name + " " + surname + " od " + holidayStartDate.ToString("d") + " do " + holidayEndDate.ToString("d");
-            summary += "\nIlość dni:" + days;
-            return summary;
+            StringBuilder stringBuilder = new StringBuilder(); 
+            stringBuilder.AppendLine($"Przyjęto wniosek urlopowy dla {name} { surname} od {holidayStartDate.ToString("d")} do {holidayEndDate.ToString("d")}");
+            stringBuilder.AppendLine($"Ilość dni: {days}");
+            return stringBuilder.ToString();
         }
     }
 }
