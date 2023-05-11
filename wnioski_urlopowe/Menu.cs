@@ -20,10 +20,11 @@ namespace menuSystem
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("MENU");
             sb.AppendLine("1. Nowy wniosek urlopowy");
+            sb.AppendLine("2. Pokaż listę wniosków");
             return sb.ToString();
         }
 
-        public enum MenuChoice { Undefined, CreateHolidayRequest };
+        public enum MenuChoice { Undefined, CreateHolidayRequest, showRequests};
 
         public MenuChoice ReadChoice(string choice)
         {
@@ -31,6 +32,8 @@ namespace menuSystem
             {
                 case "1":
                     return MenuChoice.CreateHolidayRequest;
+                case "2":
+                    return MenuChoice.showRequests;
                 default:
                     return MenuChoice.Undefined;
             }   
@@ -38,14 +41,22 @@ namespace menuSystem
 
         public string menuAction(MenuChoice menuChoice, HolidayRequest holidayRequest)
         {
+            Sql sql = new Sql();
             string actionOutput = "";
             if(menuChoice == MenuChoice.CreateHolidayRequest) 
             {
-                actionOutput = holidayRequest.GetSummary();
+                if (sql.actionSql(holidayRequest))
+                {
+                    actionOutput = holidayRequest.GetSummary();
+                }
+                else
+                {
+                    actionOutput = "Nie udało się wysłać wniosku.";
+                }
             }
-            else
+            else if(menuChoice == MenuChoice.showRequests)
             {
-                actionOutput = "Nie ma takiej opcji!";
+                actionOutput = sql.getAllRequestsForUser(holidayRequest);
             }
             return actionOutput;
         }
