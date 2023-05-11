@@ -6,6 +6,7 @@ using menuSystem;
 using holidayRequestSystem;
 using database;
 using static menuSystem.Menu;
+using wnioski_urlopowe;
 
 namespace Program
 {
@@ -14,18 +15,13 @@ namespace Program
         static void Main()
         {
             Menu menu = new Menu();
-            Console.WriteLine(menu.printMenu());
-
-            string choice = string.Empty;
-            do
-            {
-                Console.WriteLine("Wybór: ");
-                choice = Console.ReadLine();
-            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest);
+            Sql sql = new Sql();
 
             string validation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
 
+
+            Console.WriteLine("LOGOWANIE");
             while (validation != "OK")
             {
                 Console.WriteLine("Podaj imię: ");
@@ -55,7 +51,15 @@ namespace Program
                 Console.WriteLine(validation);
             }
 
-            Sql sql = new Sql();
+            Console.WriteLine(menu.printMenu());
+            string choice = string.Empty;
+            do
+            {
+                Console.WriteLine("Wybór: ");
+                choice = Console.ReadLine();
+            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest);
+
+
             if (sql.actionSql(holidayRequest))
             {
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
