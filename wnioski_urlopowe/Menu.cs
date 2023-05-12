@@ -15,31 +15,28 @@ namespace menuSystem
     internal class Menu
     {
 
-        public string PrintNextStep(int option)
+        public enum Messages { startLogin, insertName, insertSurname, insertChoice, insertStartDate, insertEndDate};
+
+        public string printMessages(Messages messages)
         {
-            string output = "";
-            switch (option)
+            switch (messages)
             {
-                case 0:
-                    output = "LOGOWANIE";
-                    break;
-                case 1:
-                    output = "Podaj imię: ";
-                    break;
-                case 2:
-                    output = "Podaj nazwisko: ";
-                    break;
-                case 3:
-                    output = "Wybór: ";
-                    break;
-                case 4:
-                    output = "Podaj datę początkową w formacie dd-MM-yyyy: ";
-                    break;
-                case 5:
-                    output = "Podaj datę końcową w formacie dd-MM-yyyy: ";
-                    break;
+                case Messages.startLogin:
+                    return "LOGOWANIE";
+                case Messages.insertName:
+                    return "Podaj imię: ";
+                case Messages.insertSurname:
+                    return "Podaj nazwisko: ";
+                case Messages.insertChoice:
+                    return "Wybór: ";
+                case Messages.insertStartDate:
+                    return "Podaj datę początkową w formacie dd-MM-yyyy: ";
+                case Messages.insertEndDate:
+                    return "Podaj datę końcową w formacie dd-MM-yyyy: ";
+                default:
+                    return "Błąd";
             }
-            return output;
+
         }
 
         public string printMenu()

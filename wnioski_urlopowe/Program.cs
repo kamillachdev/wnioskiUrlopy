@@ -21,13 +21,13 @@ namespace Program
 
             do
             {
-                Console.WriteLine(menu.PrintNextStep(4));
+                Console.WriteLine(menu.printMessages(Messages.insertStartDate));
                 startDateString = Console.ReadLine();
             } while (!DateTime.TryParseExact(startDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate));
 
             do
             {
-                Console.WriteLine(menu.PrintNextStep(5));
+                Console.WriteLine(menu.printMessages(Messages.insertEndDate));
                 endDateString = Console.ReadLine();
             } while (!DateTime.TryParseExact(endDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate));
 
@@ -43,13 +43,13 @@ namespace Program
             string name = " ", surname = " ", startDate = " ", endDate = " ";
 
 
-            Console.WriteLine(menu.PrintNextStep(0));
+            Console.WriteLine(menu.printMessages(Messages.startLogin));
             while (nameValidation != "OK")
             {
-                Console.WriteLine(menu.PrintNextStep(1));
+                Console.WriteLine(menu.printMessages(Messages.insertName));
                 name = Console.ReadLine();
 
-                Console.WriteLine(menu.PrintNextStep(2));
+                Console.WriteLine(menu.printMessages(Messages.startLogin));
                 surname = Console.ReadLine();
 
                 holidayRequest.setName(name, surname);
@@ -63,7 +63,7 @@ namespace Program
                 string choice = " ";
                 do
                 {
-                    Console.WriteLine(menu.PrintNextStep(3));
+                    Console.WriteLine(menu.printMessages(Messages.insertChoice));
                     choice = Console.ReadLine();
                 } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests && menu.ReadChoice(choice) != MenuChoice.LogOut);
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
