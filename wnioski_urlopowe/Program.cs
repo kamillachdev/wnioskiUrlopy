@@ -36,41 +36,48 @@ namespace Program
                 Console.WriteLine(nameValidation);
             }
 
-            Console.WriteLine(menu.printMenu());
-            string choice = string.Empty;
-            do
+            while (true)
             {
-                Console.WriteLine("Wybór: ");
-                choice = Console.ReadLine();
-            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests);
-
-            //first check if option is 2 so user doenst need to input dates
-            if (choice == "2")
-            {
-                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
-            }
-            else
-            {
-                while (dateValidation != "OK")
+                Console.WriteLine(menu.printMenu());
+                string choice = string.Empty;
+                do
                 {
-                    do
-                    {
-                        Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
-                        startDate = Console.ReadLine();
-                    } while (!menu.isDateValid(startDate));
+                    Console.WriteLine("Wybór: ");
+                    choice = Console.ReadLine();
+                } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests && menu.ReadChoice(choice) != MenuChoice.LogOut);
 
-                    do
-                    {
-                        Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
-                        endDate = Console.ReadLine();
-                    } while (!menu.isDateValid(endDate));
-
-
-                    holidayRequest.setDate(menu.convertToDate(startDate), menu.convertToDate(endDate));
-                    dateValidation = holidayRequest.isDateValid();
-                    Console.WriteLine(dateValidation);
+                //first check if option is 3 or 2 so user doenst need to input dates
+                if (choice == "3")
+                {
+                    Environment.Exit(0);
                 }
-                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+                if (choice == "2")
+                {
+                    Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+                }
+                else
+                {
+                    while (dateValidation != "OK")
+                    {
+                        do
+                        {
+                            Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
+                            startDate = Console.ReadLine();
+                        } while (!menu.isDateValid(startDate));
+
+                        do
+                        {
+                            Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
+                            endDate = Console.ReadLine();
+                        } while (!menu.isDateValid(endDate));
+
+
+                        holidayRequest.setDate(menu.convertToDate(startDate), menu.convertToDate(endDate));
+                        dateValidation = holidayRequest.isDateValid();
+                        Console.WriteLine(dateValidation);
+                    }
+                    Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+                }
             }
         }
     }

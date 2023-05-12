@@ -21,10 +21,11 @@ namespace menuSystem
             sb.AppendLine("MENU");
             sb.AppendLine("1. Nowy wniosek urlopowy");
             sb.AppendLine("2. Pokaż listę wniosków");
+            sb.AppendLine("3. Wyloguj się");
             return sb.ToString();
         }
 
-        public enum MenuChoice { Undefined, CreateHolidayRequest, showRequests};
+        public enum MenuChoice { Undefined, CreateHolidayRequest, showRequests, LogOut};
 
         public MenuChoice ReadChoice(string choice)
         {
@@ -34,6 +35,8 @@ namespace menuSystem
                     return MenuChoice.CreateHolidayRequest;
                 case "2":
                     return MenuChoice.showRequests;
+                case "3":
+                    return MenuChoice.LogOut;
                 default:
                     return MenuChoice.Undefined;
             }   
