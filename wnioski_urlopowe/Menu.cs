@@ -1,6 +1,7 @@
 ﻿using database;
 using Google.Protobuf;
 using holidayRequestSystem;
+using Program;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,10 +14,36 @@ namespace menuSystem
 {
     internal class Menu
     {
+
+        public string PrintNextStep(int option)
+        {
+            string output = "";
+            switch (option)
+            {
+                case 0:
+                    output = "LOGOWANIE";
+                    break;
+                case 1:
+                    output = "Podaj imię: ";
+                    break;
+                case 2:
+                    output = "Podaj nazwisko: ";
+                    break;
+                case 3:
+                    output = "Wybór: ";
+                    break;
+                case 4:
+                    output = "Podaj datę początkową w formacie dd-MM-yyyy: ";
+                    break;
+                case 5:
+                    output = "Podaj datę końcową w formacie dd-MM-yyyy: ";
+                    break;
+            }
+            return output;
+        }
+
         public string printMenu()
         {
-
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("MENU");
             sb.AppendLine("1. Nowy wniosek urlopowy");
@@ -46,8 +73,23 @@ namespace menuSystem
         {
             Sql sql = new Sql();
             string actionOutput = "";
-            if(menuChoice == MenuChoice.CreateHolidayRequest) 
+
+            if (menuChoice == MenuChoice.LogOut)
             {
+                Environment.Exit(0);
+            }
+            else if (menuChoice == MenuChoice.showRequests)
+            {
+                actionOutput = sql.getAllRequestsForUser(holidayRequest);
+            }
+            else if (menuChoice == MenuChoice.CreateHolidayRequest)
+            {
+                (DateTime start, DateTime end) = holidayManegement.GetHolidayDates();
+
+                holidayRequest.setDate(start, end);
+                string dateValidation = holidayRequest.isDateValid();
+                Console.WriteLine(dateValidation);
+
                 if (sql.dataManagement(holidayRequest))
                 {
                     actionOutput = holidayRequest.GetSummary();
@@ -57,12 +99,10 @@ namespace menuSystem
                     actionOutput = "Nie udało się wysłać wniosku.";
                 }
             }
-            else if(menuChoice == MenuChoice.showRequests)
-            {
-                actionOutput = sql.getAllRequestsForUser(holidayRequest);
-            }
+
             return actionOutput;
         }
+
 
         public DateTime convertToDate(string date)
         {

@@ -12,23 +12,44 @@ namespace Program
 {
     public class holidayManegement
     {
+
+        public static (DateTime start, DateTime end) GetHolidayDates()
+        {
+            Menu menu = new Menu();
+            string startDateString, endDateString;
+            DateTime startDate, endDate;
+
+            do
+            {
+                Console.WriteLine(menu.PrintNextStep(4));
+                startDateString = Console.ReadLine();
+            } while (!DateTime.TryParseExact(startDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate));
+
+            do
+            {
+                Console.WriteLine(menu.PrintNextStep(5));
+                endDateString = Console.ReadLine();
+            } while (!DateTime.TryParseExact(endDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate));
+
+            return (startDate, endDate);
+        }
+
         static void Main()
         {
             Menu menu = new Menu();
-
             string nameValidation = "", dateValidation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
 
             string name = " ", surname = " ", startDate = " ", endDate = " ";
 
 
-            Console.WriteLine("LOGOWANIE");
+            Console.WriteLine(menu.PrintNextStep(0));
             while (nameValidation != "OK")
             {
-                Console.WriteLine("Podaj imię: ");
+                Console.WriteLine(menu.PrintNextStep(1));
                 name = Console.ReadLine();
 
-                Console.WriteLine("Podaj nazwisko: ");
+                Console.WriteLine(menu.PrintNextStep(2));
                 surname = Console.ReadLine();
 
                 holidayRequest.setName(name, surname);
@@ -39,45 +60,13 @@ namespace Program
             while (true)
             {
                 Console.WriteLine(menu.printMenu());
-                string choice = string.Empty;
+                string choice = " ";
                 do
                 {
-                    Console.WriteLine("Wybór: ");
+                    Console.WriteLine(menu.PrintNextStep(3));
                     choice = Console.ReadLine();
                 } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests && menu.ReadChoice(choice) != MenuChoice.LogOut);
-
-                //first check if option is 3 or 2 so user doenst need to input dates
-                if (choice == "3")
-                {
-                    Environment.Exit(0);
-                }
-                if (choice == "2")
-                {
-                    Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
-                }
-                else
-                {
-                    while (dateValidation != "OK")
-                    {
-                        do
-                        {
-                            Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
-                            startDate = Console.ReadLine();
-                        } while (!menu.isDateValid(startDate));
-
-                        do
-                        {
-                            Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
-                            endDate = Console.ReadLine();
-                        } while (!menu.isDateValid(endDate));
-
-
-                        holidayRequest.setDate(menu.convertToDate(startDate), menu.convertToDate(endDate));
-                        dateValidation = holidayRequest.isDateValid();
-                        Console.WriteLine(dateValidation);
-                    }
-                    Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
-                }
+                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
             }
         }
     }
