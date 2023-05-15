@@ -7,6 +7,8 @@ using holidayRequestSystem;
 using database;
 using static menuSystem.Menu;
 using MySqlX.XDevAPI.Common;
+using wnioski_urlopowe;
+using static wnioski_urlopowe.Login;
 
 namespace Program
 {
@@ -14,6 +16,7 @@ namespace Program
     {
         static void Main()
         {
+            Login login = new Login();
             Menu menu = new Menu();
             string nameValidation = "", dateValidation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
@@ -21,13 +24,13 @@ namespace Program
             string name = " ", surname = " ";
 
 
-            Console.WriteLine(menu.printMessages(Messages.startLogin));
+            Console.WriteLine(login.printMessages(loginMessages.startLogin));
             while (nameValidation != "OK")
             {
-                Console.WriteLine(menu.printMessages(Messages.insertName));
+                Console.WriteLine(login.printMessages(loginMessages.insertName));
                 name = Console.ReadLine();
 
-                Console.WriteLine(menu.printMessages(Messages.insertSurname));
+                Console.WriteLine(login.printMessages(loginMessages.insertSurname));
                 surname = Console.ReadLine();
 
                 holidayRequest.setName(name, surname);
@@ -41,7 +44,7 @@ namespace Program
                 string choice = " ";
                 do
                 {
-                    Console.WriteLine(menu.printMessages(Messages.insertChoice));
+                    Console.WriteLine(menu.printMessages(menuMessages.insertChoice));
                     choice = Console.ReadLine();
                 } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests && menu.ReadChoice(choice) != MenuChoice.LogOut);
                 
@@ -51,20 +54,25 @@ namespace Program
                     string startDateString, endDateString;
                     DateTime startDate, endDate;
 
-                    do
+                    while (dateValidation != "OK")
                     {
-                        Console.WriteLine(menu.printMessages(Messages.insertStartDate));
+                        Console.WriteLine(menu.printMessages(menuMessages.insertStartDate));
                         startDateString = Console.ReadLine();
-                    } while (!DateTime.TryParseExact(startDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate));
 
-                    do
-                    {
-                        Console.WriteLine(menu.printMessages(Messages.insertEndDate));
+                        Console.WriteLine(menu.printMessages(menuMessages.insertEndDate));
                         endDateString = Console.ReadLine();
-                    } while (!DateTime.TryParseExact(endDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate));
 
-
-                    holidayRequest.setDate(startDate, endDate);
+                        if(DateTime.TryParseExact(startDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate) && DateTime.TryParseExact(endDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
+                        {
+                            holidayRequest.setDate(startDate, endDate);
+                            dateValidation = holidayRequest.isDateValid();
+                            Console.WriteLine(dateValidation);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                 }
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
             }

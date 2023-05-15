@@ -11,6 +11,11 @@ namespace database
 {
     internal class Sql
     {
+
+        public bool createUser()
+        {
+            return true;
+        }
         public bool dataManagement(HolidayRequest holidayRequest)
         {
             string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws;";
@@ -90,7 +95,7 @@ namespace database
                     }
                     else
                     {
-                        sb.AppendLine("Użytkownik o podanym imieniu i nazwisko nie istnieje.");
+                        sb.AppendLine("Nie utworzono żadnych wniosków.");
                         connection.Close();
                         return sb.ToString();
                     }
