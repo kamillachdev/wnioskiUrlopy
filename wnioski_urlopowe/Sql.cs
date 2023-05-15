@@ -95,7 +95,7 @@ namespace database
                     }
                     else
                     {
-                        sb.AppendLine("Użytkownik o podanym imieniu i nazwisko nie istnieje.");
+                        sb.AppendLine("Nie utworzono żadnych wniosków.");
                         connection.Close();
                         return sb.ToString();
                     }
