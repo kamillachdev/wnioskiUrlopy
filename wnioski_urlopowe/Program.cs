@@ -15,20 +15,19 @@ namespace Program
         static void Main()
         {
             Menu menu = new Menu();
-
             string nameValidation = "", dateValidation = "";
             HolidayRequest holidayRequest = new HolidayRequest();
 
-            string name = " ", surname = " ", startDate = " ", endDate = " ";
+            string name = " ", surname = " ";
 
 
-            Console.WriteLine("LOGOWANIE");
+            Console.WriteLine(menu.printMessages(Messages.startLogin));
             while (nameValidation != "OK")
             {
-                Console.WriteLine("Podaj imię: ");
+                Console.WriteLine(menu.printMessages(Messages.insertName));
                 name = Console.ReadLine();
 
-                Console.WriteLine("Podaj nazwisko: ");
+                Console.WriteLine(menu.printMessages(Messages.insertSurname));
                 surname = Console.ReadLine();
 
                 holidayRequest.setName(name, surname);
@@ -36,39 +35,36 @@ namespace Program
                 Console.WriteLine(nameValidation);
             }
 
-            Console.WriteLine(menu.printMenu());
-            string choice = string.Empty;
-            do
+            while (true)
             {
-                Console.WriteLine("Wybór: ");
-                choice = Console.ReadLine();
-            } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests);
-
-            //first check if option is 2 so user doenst need to input dates
-            if (choice == "2")
-            {
-                Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
-            }
-            else
-            {
-                while (dateValidation != "OK")
+                Console.WriteLine(menu.printMenu());
+                string choice = " ";
+                do
                 {
-                    do
-                    {
-                        Console.WriteLine("Podaj datę początkową w formacie dd-MM-yyyy: ");
-                        startDate = Console.ReadLine();
-                    } while (!menu.isDateValid(startDate));
+                    Console.WriteLine(menu.printMessages(Messages.insertChoice));
+                    choice = Console.ReadLine();
+                } while (menu.ReadChoice(choice) != MenuChoice.CreateHolidayRequest && menu.ReadChoice(choice) != MenuChoice.showRequests && menu.ReadChoice(choice) != MenuChoice.LogOut);
+                
+                if(menu.ReadChoice(choice) == MenuChoice.CreateHolidayRequest)
+                {
+                    
+                    string startDateString, endDateString;
+                    DateTime startDate, endDate;
 
                     do
                     {
-                        Console.WriteLine("Podaj datę końcową w formacie dd-MM-yyyy: ");
-                        endDate = Console.ReadLine();
-                    } while (!menu.isDateValid(endDate));
+                        Console.WriteLine(menu.printMessages(Messages.insertStartDate));
+                        startDateString = Console.ReadLine();
+                    } while (!DateTime.TryParseExact(startDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate));
+
+                    do
+                    {
+                        Console.WriteLine(menu.printMessages(Messages.insertEndDate));
+                        endDateString = Console.ReadLine();
+                    } while (!DateTime.TryParseExact(endDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate));
 
 
-                    holidayRequest.setDate(menu.convertToDate(startDate), menu.convertToDate(endDate));
-                    dateValidation = holidayRequest.isDateValid();
-                    Console.WriteLine(dateValidation);
+                    holidayRequest.setDate(startDate, endDate);
                 }
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
             }
