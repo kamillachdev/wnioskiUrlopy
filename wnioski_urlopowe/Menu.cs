@@ -14,28 +14,21 @@ namespace menuSystem
     internal class Menu
     {
 
-        public enum Messages { startLogin, insertName, insertSurname, insertChoice, insertStartDate, insertEndDate };
+        public enum menuMessages { insertChoice, insertStartDate, insertEndDate };
 
-        public string printMessages(Messages messages)
+        public string printMessages(menuMessages messages)
         {
             switch (messages)
             {
-                case Messages.startLogin:
-                    return "LOGOWANIE";
-                case Messages.insertName:
-                    return "Podaj imię: ";
-                case Messages.insertSurname:
-                    return "Podaj nazwisko: ";
-                case Messages.insertChoice:
+                case menuMessages.insertChoice:
                     return "Wybór: ";
-                case Messages.insertStartDate:
+                case menuMessages.insertStartDate:
                     return "Podaj datę początkową w formacie dd-MM-yyyy: ";
-                case Messages.insertEndDate:
+                case menuMessages.insertEndDate:
                     return "Podaj datę końcową w formacie dd-MM-yyyy: ";
                 default:
                     return "Błąd";
             }
-
         }
 
         public string printMenu()
@@ -80,9 +73,6 @@ namespace menuSystem
             }
             else if (menuChoice == MenuChoice.CreateHolidayRequest)
             {
-                string dateValidation = holidayRequest.isDateValid();
-                Console.WriteLine(dateValidation);
-
                 if (sql.dataManagement(holidayRequest))
                 {
                     actionOutput = holidayRequest.GetSummary();
@@ -102,20 +92,6 @@ namespace menuSystem
             DateTime returnDate;
             DateTime.TryParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out returnDate);
             return returnDate;
-        }
-
-        public bool isDateValid(string date)
-        {
-            DateTime startDate;
-
-            if (DateTime.TryParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

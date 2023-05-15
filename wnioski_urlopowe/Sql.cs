@@ -11,6 +11,11 @@ namespace database
 {
     internal class Sql
     {
+
+        public bool createUser()
+        {
+            return true;
+        }
         public bool dataManagement(HolidayRequest holidayRequest)
         {
             string connStr = "server=localhost;user=root;database=wnioskiUrlopowe;port=3306;password=DrT%432ws;";
