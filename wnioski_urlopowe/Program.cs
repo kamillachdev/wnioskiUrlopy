@@ -9,6 +9,7 @@ using static menuSystem.Menu;
 using MySqlX.XDevAPI.Common;
 using wnioski_urlopowe;
 using static wnioski_urlopowe.Login;
+using manageDatabase;
 
 namespace Program
 {
@@ -38,6 +39,15 @@ namespace Program
                 Console.WriteLine(nameValidation);
             }
 
+            using (var ctx = new HolidayContext())
+            {
+                var stud = new User() { UserID = holidayRequest.createId(), Name = holidayRequest.getName(), Surname = holidayRequest.getSurname() };
+
+                ctx.Users.Add(stud);
+                ctx.SaveChanges();
+            }
+
+            /*
             while (true)
             {
                 Console.WriteLine(menu.printMenu());
@@ -75,7 +85,9 @@ namespace Program
                     }
                 }
                 Console.WriteLine(menu.menuAction(menu.ReadChoice(choice), holidayRequest));
+            
             }
+            */
         }
     }
 }
