@@ -1,7 +1,6 @@
 ﻿using database;
 using Google.Protobuf;
 using holidayRequestSystem;
-using Program;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +14,7 @@ namespace menuSystem
     internal class Menu
     {
 
-        public enum Messages { startLogin, insertName, insertSurname, insertChoice, insertStartDate, insertEndDate};
+        public enum Messages { startLogin, insertName, insertSurname, insertChoice, insertStartDate, insertEndDate };
 
         public string printMessages(Messages messages)
         {
@@ -49,11 +48,11 @@ namespace menuSystem
             return sb.ToString();
         }
 
-        public enum MenuChoice { Undefined, CreateHolidayRequest, showRequests, LogOut};
+        public enum MenuChoice { Undefined, CreateHolidayRequest, showRequests, LogOut };
 
         public MenuChoice ReadChoice(string choice)
         {
-            switch(choice)
+            switch (choice)
             {
                 case "1":
                     return MenuChoice.CreateHolidayRequest;
@@ -63,7 +62,7 @@ namespace menuSystem
                     return MenuChoice.LogOut;
                 default:
                     return MenuChoice.Undefined;
-            }   
+            }
         }
 
         public string menuAction(MenuChoice menuChoice, HolidayRequest holidayRequest)
@@ -81,9 +80,6 @@ namespace menuSystem
             }
             else if (menuChoice == MenuChoice.CreateHolidayRequest)
             {
-                (DateTime start, DateTime end) = holidayManegement.GetHolidayDates();
-
-                holidayRequest.setDate(start, end);
                 string dateValidation = holidayRequest.isDateValid();
                 Console.WriteLine(dateValidation);
 
